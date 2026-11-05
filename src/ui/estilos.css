@@ -187,3 +187,21 @@ tr.retirado td { color: var(--texto-suave); }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* ---------- Impresión: emparejamientos y clasificación para colgar en la pared ---------- */
+@media print {
+  @page { size: A4 portrait; margin: 14mm; }
+  html, body { font-size: 12pt; background: #fff; }
+  .app { max-width: none; padding: 0; }
+  .solo-pantalla, .anteriores, .ajustes { display: none !important; }
+  .vista-ronda { display: block; }
+  .clasificacion { break-before: page; }
+  .vista-final .clasificacion { break-before: auto; }
+  .cabecera-logo { height: 56px; }
+  .ronda-grande { font-size: 64pt; }
+  .mesa { break-inside: avoid; grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .mesa-resultado { grid-column: auto; justify-items: end; }
+  .resultado-impreso { display: inline; font-stretch: 75%; font-weight: 900; font-size: 18pt; }
+  tr.lider td { background: none; font-weight: 900; }
+  .pieza-negra { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
