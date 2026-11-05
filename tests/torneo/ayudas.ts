@@ -1,3 +1,4 @@
+import { crearTorneo, empezar, inscribir, registrarResultado } from '../../src/torneo/acciones';
 import { emparejarPrimera, emparejarSiguiente, rng } from '../../src/torneo/emparejar';
 import type { Jugador, Mesa, Resultado, Ronda, Torneo } from '../../src/torneo/tipos';
 
@@ -38,3 +39,12 @@ export function simular(n: number, rondas: number, semilla: number): Torneo {
   }
   return t;
 }
+
+/** Torneo de 5 jugadores en la ronda 1 con un resultado apuntado. */
+export function torneoEnCurso(): Torneo {
+  let t = crearTorneo('Torneo de otoño', 3, 5);
+  for (const [n, e] of [['Ana', '1650'], ['Luis', ''], ['Marta', '1500'], ['Jorge', '1400'], ['Pilar', '']]) t = inscribir(t, n, e);
+  t = empezar(t);
+  return registrarResultado(t, 1, 1, '½-½');
+}
+
