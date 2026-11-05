@@ -1,0 +1,128 @@
+@import '@fontsource-variable/archivo/wdth.css';
+
+/* Estilo «Cartel de barrio»: blanco y negro como el logo, un único acento amarillo. */
+:root {
+  --fondo: #ffffff;
+  --tinta: #111111;
+  --acento: #ffd23f;
+  --linea: #bbbbbb;
+  --texto-suave: #4a4a4a;
+  --peligro: #a3161a;
+  --letra: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--letra);
+  font-size: 17px;
+  line-height: 1.45;
+  font-stretch: 100%;
+}
+
+.app { max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px; }
+
+h1, h2, h3 { margin: 0; font-stretch: 75%; font-weight: 800; line-height: 1.1; }
+h2 { font-size: 26px; margin-bottom: 12px; }
+
+:focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; box-shadow: 0 0 0 6px var(--acento); }
+
+/* ---------- Cabecera ---------- */
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 6px solid var(--tinta);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+.cabecera-logo { display: block; height: 64px; width: auto; flex-shrink: 0; }
+.cabecera-titulo { text-align: right; min-width: 0; }
+.ronda-grande {
+  font-stretch: 62%;
+  font-weight: 900;
+  font-size: clamp(56px, 11vw, 112px);
+  line-height: 0.85;
+  letter-spacing: -0.01em;
+}
+.titulo-torneo { font-size: clamp(30px, 6vw, 52px); font-stretch: 62%; font-weight: 900; overflow-wrap: anywhere; }
+.cabecera-sub { margin: 6px 0 0; font-weight: 600; font-size: 15px; }
+
+/* ---------- Controles ---------- */
+button {
+  font: inherit;
+  font-stretch: 75%;
+  font-weight: 800;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid var(--tinta);
+  background: var(--fondo);
+  color: var(--tinta);
+  border-radius: 0;
+  cursor: pointer;
+}
+button:hover { background: #f2f2f2; }
+.boton-principal { background: var(--tinta); color: var(--acento); font-size: 20px; padding: 12px 22px; border: 0; }
+.boton-principal:hover { background: #333; }
+.boton-texto { border: 0; background: none; text-decoration: underline; padding: 8px; font-weight: 600; font-stretch: 100%; }
+.boton-peligro { border-color: var(--peligro); color: var(--peligro); }
+
+label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: 15px; }
+input {
+  font: inherit;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 2px solid var(--tinta);
+  border-radius: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  width: 100%;
+}
+
+.aviso {
+  background: var(--acento);
+  border: 2px solid var(--tinta);
+  padding: 10px 14px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+.nota { margin: 0; font-size: 15px; color: var(--texto-suave); }
+.vacio { color: var(--texto-suave); }
+
+/* ---------- Crear torneo ---------- */
+.formulario { display: grid; gap: 14px; max-width: 460px; }
+
+/* ---------- Inscripción ---------- */
+.alta-campos { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+.lista-jugadores { list-style: none; padding: 0; margin: 16px 0; border-top: 2px solid var(--tinta); }
+.lista-jugadores li {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--linea);
+}
+.lista-num { font-stretch: 62%; font-weight: 900; font-size: 24px; }
+.lista-nombre { font-weight: 600; overflow-wrap: anywhere; }
+.lista-elo { font-variant-numeric: tabular-nums; color: var(--texto-suave); }
+.lista-acciones { display: flex; gap: 4px; }
+.pie-inscripcion { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; justify-content: space-between; }
+.campo-rondas { width: 120px; }
+
+@media (max-width: 760px) {
+  .cabecera-logo { height: 52px; }
+  .alta-campos { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .alta-campos button { grid-column: 1 / -1; }
+  .lista-jugadores li { grid-template-columns: 32px minmax(0, 1fr) auto; }
+  .lista-acciones { grid-column: 2 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
