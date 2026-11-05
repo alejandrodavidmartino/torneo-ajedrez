@@ -115,12 +115,73 @@ input {
 .pie-inscripcion { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; justify-content: space-between; }
 .campo-rondas { width: 120px; }
 
+
+/* ---------- Ronda ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.vista-ronda { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.mesa {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 2px solid var(--tinta);
+}
+.partidas h2 + .mesa { border-top: 2px solid var(--tinta); }
+.mesa-num { font-stretch: 62%; font-weight: 900; font-size: 38px; line-height: 1; }
+.mesa-jugadores { display: grid; gap: 4px; font-size: 18px; font-weight: 600; min-width: 0; }
+.jugador { display: flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
+.pieza { display: inline-block; width: 15px; height: 15px; border: 2px solid var(--tinta); flex-shrink: 0; }
+.pieza-negra { background: var(--tinta); }
+.mesa-resultado { display: grid; justify-items: end; gap: 4px; }
+.botones-resultado { display: flex; gap: 6px; }
+.botones-resultado button { min-width: 54px; font-size: 18px; padding: 8px 10px; }
+.botones-resultado button[aria-pressed='true'] { background: var(--acento); }
+.resultado-impreso { display: none; }
+.nota-mesa { font-size: 14px; font-weight: 600; }
+.mas summary { cursor: pointer; font-size: 14px; text-decoration: underline; padding: 4px 0; text-align: right; min-height: 32px; }
+.mas[open] { display: grid; justify-items: end; }
+.descanso { padding: 12px 0; margin: 0; border-bottom: 2px solid var(--tinta); }
+.pie-ronda { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+.pendientes { font-weight: 600; }
+.pie-botones { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ---------- Clasificación ---------- */
+.tabla-contenedor { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 16px; }
+th { text-align: left; font-weight: 600; font-size: 13px; padding: 6px 4px; border-bottom: 2px solid var(--tinta); }
+td { padding: 8px 4px; border-bottom: 1px solid var(--linea); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.pts { font-stretch: 75%; font-weight: 900; font-size: 20px; }
+tr.lider td { background: var(--acento); font-weight: 800; }
+tr.retirado td { color: var(--texto-suave); }
+.marca-retirado { font-size: 14px; }
+.clasificacion .boton-texto { min-height: 36px; font-size: 14px; }
+
+/* ---------- Rondas anteriores y ajustes ---------- */
+.anteriores, .ajustes { margin-top: 40px; border-top: 6px solid var(--tinta); padding-top: 16px; }
+.anteriores details { border-bottom: 2px solid var(--tinta); }
+.anteriores summary { font-stretch: 75%; font-weight: 800; font-size: 20px; padding: 10px 0; cursor: pointer; min-height: 44px; }
+.ajustes-botones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.boton-archivo {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 8px 16px; border: 2px solid var(--tinta);
+  font-stretch: 75%; font-weight: 800; font-size: 17px; cursor: pointer;
+}
+.boton-archivo:focus-within { outline: 3px solid var(--tinta); outline-offset: 2px; box-shadow: 0 0 0 6px var(--acento); }
+.boton-archivo input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
 @media (max-width: 760px) {
   .cabecera-logo { height: 52px; }
   .alta-campos { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .alta-campos button { grid-column: 1 / -1; }
   .lista-jugadores li { grid-template-columns: 32px minmax(0, 1fr) auto; }
   .lista-acciones { grid-column: 2 / -1; }
+  .vista-ronda { grid-template-columns: 1fr; }
+  .mesa { grid-template-columns: 36px minmax(0, 1fr); }
+  .mesa-resultado { grid-column: 2; justify-items: start; }
+  .mas[open] { justify-items: start; }
+  .mas summary { text-align: left; }
 }
 
 @media (prefers-reduced-motion: reduce) {

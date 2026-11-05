@@ -1,18 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/preact';
 import { afterEach, beforeEach, describe, expect, test } from 'vitest';
 import { App } from '../../src/ui/App';
-
-export function crearTorneoUI(nombre = 'Torneo de otoño', rondas = '3') {
-  fireEvent.input(screen.getByLabelText('Nombre del torneo'), { target: { value: nombre } });
-  fireEvent.input(screen.getByLabelText('Número de rondas'), { target: { value: rondas } });
-  fireEvent.click(screen.getByRole('button', { name: 'Crear torneo' }));
-}
-
-export function anadirJugador(nombre: string, elo = '') {
-  fireEvent.input(screen.getByLabelText('Nombre'), { target: { value: nombre } });
-  fireEvent.input(screen.getByLabelText('ELO (opcional)'), { target: { value: elo } });
-  fireEvent.click(screen.getByRole('button', { name: 'Añadir jugador' }));
-}
+import { anadirJugador, crearTorneoUI } from './ayudas-ui';
 
 describe('inscripción', () => {
   beforeEach(() => localStorage.clear());
@@ -58,6 +47,15 @@ describe('inscripción', () => {
     const nombre = screen.getByLabelText('Nombre') as HTMLInputElement;
     expect(document.activeElement).toBe(nombre);
     expect(nombre.value).toBe('');
+  });
+
+  test('lee lo escrito aunque el navegador no avise (autocompletado)', () => {
+    render(<App />);
+    (screen.getByLabelText('Nombre del torneo') as HTMLInputElement).value = 'Torneo de otoño';
+    fireEvent.click(screen.getByRole('button', { name: 'Crear torneo' }));
+    (screen.getByLabelText('Nombre') as HTMLInputElement).value = 'Ana';
+    fireEvent.click(screen.getByRole('button', { name: 'Añadir jugador' }));
+    expect(screen.getAllByRole('listitem')).toHaveLength(1);
   });
 
   test('se puede quitar un jugador', () => {

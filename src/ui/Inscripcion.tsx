@@ -13,17 +13,18 @@ export function CrearTorneo({ crear }: { crear: (fn: () => Torneo) => boolean })
       class="panel formulario"
       onSubmit={(e) => {
         e.preventDefault();
-        crear(() => crearTorneo(nombre, Number(rondas)));
+        const datos = new FormData(e.currentTarget);
+        crear(() => crearTorneo(String(datos.get('nombre') ?? ''), Number(datos.get('rondas'))));
       }}
     >
       <h2>Nuevo torneo</h2>
       <label>
         Nombre del torneo
-        <input value={nombre} onInput={(e) => setNombre(e.currentTarget.value)} placeholder="Torneo de otoño" />
+        <input name="nombre" value={nombre} onInput={(e) => setNombre(e.currentTarget.value)} placeholder="Torneo de otoño" />
       </label>
       <label>
         Número de rondas
-        <input type="number" inputMode="numeric" min={1} value={rondas} onInput={(e) => setRondas(e.currentTarget.value)} />
+        <input name="rondas" type="number" inputMode="numeric" min={1} value={rondas} onInput={(e) => setRondas(e.currentTarget.value)} />
       </label>
       <button class="boton-principal" type="submit">
         Crear torneo
@@ -40,11 +41,14 @@ export function Inscripcion({ torneo, aplicar }: { torneo: Torneo; aplicar: Apli
   const n = torneo.jugadores.length;
   const aviso = n >= 2 ? avisoRondas(n, torneo.rondasTotales) : null;
 
-  const enviar = (e: Event) => {
+  const enviar = (e: SubmitEvent) => {
     e.preventDefault();
+    const datos = new FormData(e.currentTarget as HTMLFormElement);
+    const nombreActual = String(datos.get('nombre') ?? '');
+    const eloActual = String(datos.get('elo') ?? '');
     const ok = editando
-      ? aplicar((t) => editarJugador(t, editando, nombre, elo))
-      : aplicar((t) => inscribir(t, nombre, elo));
+      ? aplicar((t) => editarJugador(t, editando, nombreActual, eloActual))
+      : aplicar((t) => inscribir(t, nombreActual, eloActual));
     if (ok) {
       setNombre('');
       setElo('');
@@ -60,11 +64,11 @@ export function Inscripcion({ torneo, aplicar }: { torneo: Torneo; aplicar: Apli
         <div class="alta-campos">
           <label class="campo-nombre">
             Nombre
-            <input ref={campoNombre} autoFocus value={nombre} onInput={(e) => setNombre(e.currentTarget.value)} autoComplete="off" />
+            <input ref={campoNombre} name="nombre" autoFocus value={nombre} onInput={(e) => setNombre(e.currentTarget.value)} autoComplete="off" />
           </label>
           <label class="campo-elo">
             ELO (opcional)
-            <input value={elo} inputMode="numeric" onInput={(e) => setElo(e.currentTarget.value)} autoComplete="off" />
+            <input name="elo" value={elo} inputMode="numeric" onInput={(e) => setElo(e.currentTarget.value)} autoComplete="off" />
           </label>
           <button type="submit">{editando ? 'Guardar cambios' : 'Añadir jugador'}</button>
         </div>
