@@ -201,9 +201,9 @@ tr.retirado td { color: var(--texto-suave); }
   .lista-jugadores li { grid-template-columns: 32px minmax(0, 1fr) auto; }
   .lista-acciones { grid-column: 2 / -1; }
   .vista-ronda { grid-template-columns: 1fr; }
-  .mesa { grid-template-columns: 36px minmax(0, max-content) minmax(72px, 1fr); }
-  .mini-tablero { width: 72px; height: 72px; }
-  .ficha { font-size: 8px; }
+  .mesa { grid-template-columns: 36px minmax(0, 1fr) auto; }
+  .mini-tablero { width: 88px; height: 88px; justify-self: end; }
+  .ficha { font-size: 9.5px; }
   .mesa-resultado { grid-column: 2 / -1; justify-items: start; }
   .mas[open] { justify-items: start; }
   .mas summary { text-align: left; }
