@@ -121,7 +121,7 @@ input {
 .vista-ronda { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 .mesa {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
+  grid-template-columns: 48px minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 14px;
   padding: 12px 0;
@@ -139,6 +139,26 @@ input {
 .botones-resultado button { min-width: 54px; font-size: 18px; padding: 8px 10px; }
 .botones-resultado button[aria-pressed='true'] { background: var(--acento); }
 .resultado-impreso { display: none; }
+
+/* Minitablero decorativo de cada mesa */
+.mini-tablero {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 112px;
+  height: 112px;
+  border: 2px solid var(--tinta);
+  flex-shrink: 0;
+}
+.casilla { display: grid; place-items: center; overflow: hidden; }
+.casilla.clara { background: var(--fondo); }
+.casilla.oscura { background: #c8c8c8; }
+.casilla.movida { background: var(--acento); }
+.casilla.vencido { background: var(--acento); box-shadow: inset 0 0 0 2px var(--tinta); }
+.ficha { font-size: 12px; line-height: 1; font-family: 'Segoe UI Symbol', 'DejaVu Sans', 'Noto Sans Symbols 2', serif; }
+.ficha-n { color: var(--tinta); }
+.ficha-b { color: var(--fondo); -webkit-text-stroke: 0.7px var(--tinta); paint-order: stroke fill; text-shadow: 0 0 1px var(--tinta); }
+.casilla.movida .ficha { animation: aparecer 0.35s ease-out; }
+@keyframes aparecer { from { transform: scale(0.4); opacity: 0.2; } to { transform: scale(1); opacity: 1; } }
 .nota-mesa { font-size: 14px; font-weight: 600; }
 .mas summary { cursor: pointer; font-size: 14px; text-decoration: underline; padding: 4px 0; text-align: right; min-height: 32px; }
 .mas[open] { display: grid; justify-items: end; }
@@ -179,8 +199,10 @@ tr.retirado td { color: var(--texto-suave); }
   .lista-jugadores li { grid-template-columns: 32px minmax(0, 1fr) auto; }
   .lista-acciones { grid-column: 2 / -1; }
   .vista-ronda { grid-template-columns: 1fr; }
-  .mesa { grid-template-columns: 36px minmax(0, 1fr); }
-  .mesa-resultado { grid-column: 2; justify-items: start; }
+  .mesa { grid-template-columns: 36px minmax(0, 1fr) auto; }
+  .mini-tablero { width: 88px; height: 88px; }
+  .ficha { font-size: 9.5px; }
+  .mesa-resultado { grid-column: 2 / -1; justify-items: start; }
   .mas[open] { justify-items: start; }
   .mas summary { text-align: left; }
 }
@@ -201,6 +223,7 @@ tr.retirado td { color: var(--texto-suave); }
   .cabecera-logo { height: 56px; }
   .ronda-grande { font-size: 64pt; }
   .mesa { break-inside: avoid; grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .mini-tablero { display: none !important; }
   .mesa-resultado { grid-column: auto; justify-items: end; }
   .resultado-impreso { display: inline; font-stretch: 75%; font-weight: 900; font-size: 18pt; }
   tr.lider td { background: none; font-weight: 900; }

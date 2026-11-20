@@ -27,6 +27,16 @@ describe('pantalla de ronda', () => {
     }
   });
 
+  test('cada mesa tiene un minitablero que refleja el resultado', () => {
+    render(<App />);
+    empezarTorneoUI(['Ana', 'Luis', 'Marta', 'Jorge']);
+    const tablero = () => within(mesas()[0]).getByRole('img', { name: /Partida en juego|Ganan blancas/ });
+    expect(tablero().getAttribute('aria-label')).toBe('Partida en juego');
+    expect(tablero().querySelectorAll('.casilla')).toHaveLength(64);
+    fireEvent.click(within(mesas()[0]).getByRole('button', { name: '1–0' }));
+    expect(tablero().getAttribute('aria-label')).toBe('Ganan blancas');
+  });
+
   test('no se puede pasar de ronda con resultados pendientes', () => {
     render(<App />);
     empezarTorneoUI(['Ana', 'Luis', 'Marta', 'Jorge']);

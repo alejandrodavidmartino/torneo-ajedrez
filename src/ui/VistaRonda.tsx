@@ -2,6 +2,7 @@ import { deshacerRonda, registrarResultado, siguienteRonda, terminarAntes } from
 import type { ErrorTorneo, Mesa, Resultado, Ronda, Torneo } from '../torneo/tipos';
 import type { Aplicar } from './App';
 import { Clasificacion } from './Clasificacion';
+import { MiniTablero } from './MiniTablero';
 import { Peon } from './Peon';
 
 const BOTONES: [Resultado, string, string][] = [
@@ -36,6 +37,7 @@ function MesaFila({ ronda, mesa, nombres, aplicar }: { ronda: Ronda; mesa: Mesa;
           {nombres.get(mesa.negras)}
         </span>
       </span>
+      <MiniTablero resultado={mesa.resultado} semilla={ronda.numero * 7 + mesa.numero} />
       <span class="mesa-resultado">
         <span class="botones-resultado solo-pantalla">
           {BOTONES.map(([r, texto, descripcion]) => (
