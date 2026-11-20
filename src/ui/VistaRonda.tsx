@@ -72,12 +72,12 @@ function MesaFila({ ronda, mesa, nombres, aplicar }: { ronda: Ronda; mesa: Mesa;
 
 function ListaMesas({ ronda, nombres, aplicar }: { ronda: Ronda; nombres: Map<string, string>; aplicar: Aplicar }) {
   return (
-    <>
+    <div class="lista-mesas">
       {ronda.mesas.map((m) => (
         <MesaFila key={m.numero} ronda={ronda} mesa={m} nombres={nombres} aplicar={aplicar} />
       ))}
       {ronda.descansa && <p class="descanso">{nombres.get(ronda.descansa)} descansa esta ronda y suma 1 punto.</p>}
-    </>
+    </div>
   );
 }
 
