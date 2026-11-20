@@ -6,7 +6,7 @@ import type { Torneo } from '../torneo/tipos';
 import type { Aplicar } from './App';
 
 export function CrearTorneo({ crear }: { crear: (fn: () => Torneo) => boolean }) {
-  const [nombre, setNombre] = useState('');
+  const [nombre, setNombre] = useState('Torneo Lucero');
   const [rondas, setRondas] = useState('5');
   return (
     <form

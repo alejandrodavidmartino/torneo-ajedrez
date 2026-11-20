@@ -18,7 +18,7 @@ export function Cabecera({ torneo }: { torneo: Torneo | null }) {
         ) : (
           <>
             <h1 class="titulo-torneo">{torneo ? torneo.nombre : 'Torneo de ajedrez'}</h1>
-            <p class="cabecera-sub">{torneo?.estado === 'terminado' ? 'Torneo terminado' : 'Sistema suizo'}</p>
+            <p class="cabecera-sub">{torneo?.estado === 'terminado' ? 'Torneo terminado' : 'Fiestas de Lucero'}</p>
           </>
         )}
       </div>

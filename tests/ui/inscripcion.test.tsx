@@ -12,6 +12,12 @@ describe('inscripción', () => {
     expect(screen.getByAltText('Asociación Vecinal Lucero')).toBeTruthy();
   });
 
+  test('la cabecera dice Fiestas de Lucero y el nombre por defecto es Torneo Lucero', () => {
+    render(<App />);
+    expect(screen.getByText('Fiestas de Lucero')).toBeTruthy();
+    expect((screen.getByLabelText('Nombre del torneo') as HTMLInputElement).value).toBe('Torneo Lucero');
+  });
+
   test('crear torneo y añadir 3 jugadores', () => {
     render(<App />);
     crearTorneoUI();
