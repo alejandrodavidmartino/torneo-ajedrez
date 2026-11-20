@@ -17,6 +17,16 @@ describe('pantalla de ronda', () => {
     expect(screen.getByText('Faltan 2 resultados')).toBeTruthy();
   });
 
+  test('cada mesa muestra un peón blanco y uno negro', () => {
+    render(<App />);
+    empezarTorneoUI(['Ana', 'Luis', 'Marta', 'Jorge']);
+    for (const m of mesas()) {
+      expect(m.querySelectorAll('svg.peon-blanco')).toHaveLength(1);
+      expect(m.querySelectorAll('svg.peon-negro')).toHaveLength(1);
+      expect(m.querySelector('.pieza')).toBeNull();
+    }
+  });
+
   test('no se puede pasar de ronda con resultados pendientes', () => {
     render(<App />);
     empezarTorneoUI(['Ana', 'Luis', 'Marta', 'Jorge']);

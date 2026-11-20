@@ -2,6 +2,7 @@ import { deshacerRonda, registrarResultado, siguienteRonda, terminarAntes } from
 import type { ErrorTorneo, Mesa, Resultado, Ronda, Torneo } from '../torneo/tipos';
 import type { Aplicar } from './App';
 import { Clasificacion } from './Clasificacion';
+import { Peon } from './Peon';
 
 const BOTONES: [Resultado, string, string][] = [
   ['1-0', '1–0', 'gana blancas'],
@@ -25,12 +26,12 @@ function MesaFila({ ronda, mesa, nombres, aplicar }: { ronda: Ronda; mesa: Mesa;
       </span>
       <span class="mesa-jugadores">
         <span class="jugador">
-          <span class="pieza pieza-blanca" title="Blancas" />
+          <Peon color="blanco" />
           <span class="sr-only">Blancas: </span>
           {nombres.get(mesa.blancas)}
         </span>
         <span class="jugador">
-          <span class="pieza pieza-negra" title="Negras" />
+          <Peon color="negro" />
           <span class="sr-only">Negras: </span>
           {nombres.get(mesa.negras)}
         </span>

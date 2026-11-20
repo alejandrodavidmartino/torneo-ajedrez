@@ -131,8 +131,9 @@ input {
 .mesa-num { font-stretch: 62%; font-weight: 900; font-size: 38px; line-height: 1; }
 .mesa-jugadores { display: grid; gap: 4px; font-size: 18px; font-weight: 600; min-width: 0; }
 .jugador { display: flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
-.pieza { display: inline-block; width: 15px; height: 15px; border: 2px solid var(--tinta); flex-shrink: 0; }
-.pieza-negra { background: var(--tinta); }
+.peon { flex-shrink: 0; stroke: var(--tinta); stroke-width: 1.6; stroke-linejoin: round; }
+.peon-blanco { fill: var(--fondo); }
+.peon-negro { fill: var(--tinta); }
 .mesa-resultado { display: grid; justify-items: end; gap: 4px; }
 .botones-resultado { display: flex; gap: 6px; }
 .botones-resultado button { min-width: 54px; font-size: 18px; padding: 8px 10px; }
@@ -203,5 +204,5 @@ tr.retirado td { color: var(--texto-suave); }
   .mesa-resultado { grid-column: auto; justify-items: end; }
   .resultado-impreso { display: inline; font-stretch: 75%; font-weight: 900; font-size: 18pt; }
   tr.lider td { background: none; font-weight: 900; }
-  .pieza-negra { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .peon { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
