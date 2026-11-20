@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { cargar, guardar } from '../almacen';
+import { cargarAlEmpezar, guardar } from '../almacen';
 import { ErrorTorneo, type Torneo } from '../torneo/tipos';
 import { Ajustes } from './Ajustes';
 import { Cabecera } from './Cabecera';
@@ -11,8 +11,13 @@ import './estilos.css';
 export type Aplicar = (fn: (t: Torneo) => Torneo) => boolean;
 
 export function App() {
-  const [torneo, setTorneo] = useState<Torneo | null>(() => cargar());
-  const [error, setError] = useState<ErrorTorneo | null>(null);
+  const [inicio] = useState(cargarAlEmpezar);
+  const [torneo, setTorneo] = useState<Torneo | null>(inicio.torneo);
+  const [error, setError] = useState<ErrorTorneo | null>(() =>
+    inicio.danado
+      ? new ErrorTorneo('guardado-danado', 'No se ha podido leer el torneo guardado en este aparato. Si tienes una copia descargada, cárgala.')
+      : null,
+  );
   // Último estado conocido, aunque la pantalla aún no se haya repintado:
   // así dos toques seguidos no se pisan.
   const actual = useRef(torneo);

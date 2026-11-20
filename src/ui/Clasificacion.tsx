@@ -32,7 +32,7 @@ export function Clasificacion({ torneo, aplicar, titulo = 'Clasificación' }: { 
           </thead>
           <tbody>
             {filas.map(({ jugador, est, puesto }) => (
-              <tr key={jugador.id} class={puesto === 1 ? 'lider' : jugador.retirado ? 'retirado' : undefined}>
+              <tr key={jugador.id} class={[puesto === 1 && 'lider', jugador.retirado && 'retirado'].filter(Boolean).join(' ') || undefined}>
                 <td>{puesto}</td>
                 <td>
                   {jugador.nombre}

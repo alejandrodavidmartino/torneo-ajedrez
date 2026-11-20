@@ -29,19 +29,30 @@ export function importar(texto: string): Torneo {
 
   const ids = new Set<string>();
   for (const j of jugadores) {
-    if (!esObjeto(j) || !esTexto(j.id) || !esTexto(j.nombre) || !esEntero(j.orden) || typeof j.retirado !== 'boolean') invalido();
+    if (!esObjeto(j) || !esTexto(j.id) || !esTexto(j.nombre) || !j.nombre.trim() || !esEntero(j.orden) || typeof j.retirado !== 'boolean') invalido();
     if (j.elo !== null && !esEntero(j.elo)) invalido();
     if (ids.has(j.id)) invalido();
     ids.add(j.id);
   }
-  for (const r of rondas) {
-    if (!esObjeto(r) || !esEntero(r.numero) || typeof r.cerrada !== 'boolean' || !Array.isArray(r.mesas)) invalido();
+  rondas.forEach((r, i) => {
+    if (!esObjeto(r) || r.numero !== i + 1 || typeof r.cerrada !== 'boolean' || !Array.isArray(r.mesas)) invalido();
     if (r.descansa !== null && !ids.has(r.descansa as string)) invalido();
+    // Todas las rondas salvo la última están cerradas; si el torneo terminó, también la última.
+    const esUltima = i === rondas.length - 1;
+    if (!r.cerrada && (!esUltima || estado === 'terminado')) invalido();
+    const enRonda = new Set<string>(r.descansa ? [r.descansa as string] : []);
     for (const m of r.mesas) {
       if (!esObjeto(m) || !esEntero(m.numero) || !ids.has(m.blancas as string) || !ids.has(m.negras as string)) invalido();
       if (m.resultado !== null && !RESULTADOS.includes(m.resultado as never)) invalido();
+      for (const id of [m.blancas as string, m.negras as string]) {
+        if (enRonda.has(id)) invalido();
+        enRonda.add(id);
+      }
     }
-  }
+  });
+  // Coherencia entre el estado y las rondas.
+  if (estado === 'inscripcion' ? rondas.length > 0 : rondas.length === 0) invalido();
+  if (rondasTotales < Math.max(1, rondas.length)) invalido();
   return datos as unknown as Torneo;
 }
 

@@ -105,6 +105,9 @@ export function registrarResultado(t: Torneo, ronda: number, mesa: number, r: Re
     ),
   };
   const esActual = objetivo === rondaActual(t) && !objetivo.cerrada;
+  // Si se corrige una incomparecencia apuntada por error, el jugador vuelve al torneo.
+  if (esActual && m.resultado === '1F-0F' && r !== '1F-0F') nuevo = cambiarJugador(nuevo, m.negras, { retirado: false });
+  if (esActual && m.resultado === '0F-1F' && r !== '0F-1F') nuevo = cambiarJugador(nuevo, m.blancas, { retirado: false });
   if (esActual && r === '1F-0F') nuevo = cambiarJugador(nuevo, m.negras, { retirado: true });
   if (esActual && r === '0F-1F') nuevo = cambiarJugador(nuevo, m.blancas, { retirado: true });
   return nuevo;
@@ -121,6 +124,16 @@ export function siguienteRonda(t: Torneo): Torneo {
   if (t.estado !== 'en-curso') fallar('torneo-no-en-curso', 'El torneo no está en curso.');
   const cerrado = cerrarActual(t);
   if (cerrado.rondas.length >= cerrado.rondasTotales) return { ...cerrado, estado: 'terminado' };
+  const activos = cerrado.jugadores.filter((j) => !j.retirado);
+  if (activos.length < 2) {
+    fallar('pocos-activos', 'Quedan menos de 2 jugadores activos. Puedes terminar el torneo aquí.');
+  }
+  if (activos.length % 2 === 1) {
+    const descansados = new Set(cerrado.rondas.map((r) => r.descansa));
+    if (activos.every((j) => descansados.has(j.id))) {
+      fallar('sin-descanso', 'Todos los jugadores que quedan ya han descansado una vez. Puedes terminar el torneo aquí.');
+    }
+  }
   const nueva = emparejarSiguiente(cerrado);
   if (!nueva) {
     fallar('sin-emparejamiento', 'No hay forma de emparejar otra ronda sin repetir rivales. Puedes terminar el torneo aquí.');

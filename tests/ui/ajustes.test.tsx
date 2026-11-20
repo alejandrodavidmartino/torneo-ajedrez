@@ -20,6 +20,7 @@ describe('ajustes', () => {
   });
 
   test('cargar un archivo inválido avisa y no toca el torneo actual', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
     render(<App />);
     empezarTorneoUI(['Ana', 'Luis', 'Marta', 'Jorge']);
     const antes = mesas().map((m) => m.textContent);
@@ -28,7 +29,26 @@ describe('ajustes', () => {
     expect(mesas().map((m) => m.textContent)).toEqual(antes);
   });
 
+  test('cargar una copia pide confirmación y, si se cancela, no cambia nada', async () => {
+    const confirmar = vi.spyOn(window, 'confirm').mockReturnValue(false);
+    render(<App />);
+    empezarTorneoUI(['Ana', 'Luis', 'Marta', 'Jorge']);
+    cargarArchivo(exportar(torneoEnCurso()));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(confirmar).toHaveBeenCalledWith('¿Cargar esta copia? Se sustituirá el torneo actual.');
+    expect(screen.queryByText('Pilar')).toBeNull();
+  });
+
+  test('si el torneo guardado no se puede leer, se avisa', () => {
+    localStorage.setItem('torneo-lucero:v1', '{"version":99}');
+    render(<App />);
+    expect(screen.getByRole('alert').textContent).toBe(
+      'No se ha podido leer el torneo guardado en este aparato. Si tienes una copia descargada, cárgala.',
+    );
+  });
+
   test('cargar una copia válida sustituye el torneo', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
     render(<App />);
     empezarTorneoUI(['Ana', 'Luis', 'Marta', 'Jorge']);
     cargarArchivo(exportar(torneoEnCurso()));

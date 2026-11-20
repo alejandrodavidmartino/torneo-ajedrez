@@ -88,14 +88,36 @@ export function emparejarSiguiente(t: Torneo): Ronda | null {
       .map((f) => f.jugador.id);
   }
 
-  for (const estricto of [true, false]) {
-    for (const descansa of candidatosDescanso) {
-      const lista = activos.filter((id) => id !== descansa);
-      const parejas = buscarParejas(lista, est, estricto);
+  // Para cada candidato a descansar (el de menos puntos primero), se intenta
+  // respetar los colores y, si no se puede, se relajan. Nunca se repite rival.
+  for (const descansa of candidatosDescanso) {
+    const lista = activos.filter((id) => id !== descansa);
+    for (const estricto of [true, false]) {
+      if (estricto && !coloresPosibles(lista, est)) continue;
+      const parejas = buscarParejas(lista, est, estricto, estricto ? LIMITE_ESTRICTO : Infinity);
       if (parejas) return construirRonda(t.rondas.length + 1, parejas, descansa, est, rango);
     }
   }
   return null;
+}
+
+/**
+ * Pasos máximos de la búsqueda con colores estrictos. Si se agotan, se pasa a
+ * colores relajados en vez de dejar la pantalla congelada.
+ */
+const LIMITE_ESTRICTO = 20_000;
+
+/** Comprueba rápido si los colores obligados pueden cuadrar: cada obligado a blancas necesita un rival que pueda llevar negras. */
+function coloresPosibles(lista: string[], est: Map<string, Estadistica>): boolean {
+  let blancas = 0;
+  let negras = 0;
+  for (const id of lista) {
+    const debe = colorDebe(est.get(id)!);
+    if (debe === 'B') blancas++;
+    else if (debe === 'N') negras++;
+  }
+  const libres = lista.length - blancas - negras;
+  return Math.abs(blancas - negras) <= libres;
 }
 
 function compatibles(p: Estadistica, q: Estadistica, estricto: boolean): boolean {
@@ -106,11 +128,18 @@ function compatibles(p: Estadistica, q: Estadistica, estricto: boolean): boolean
 }
 
 /** `lista` va ordenada por clasificación. Devuelve parejas [mejor, peor] o null. */
-function buscarParejas(lista: string[], est: Map<string, Estadistica>, estricto: boolean): [string, string][] | null {
+function buscarParejas(
+  lista: string[],
+  est: Map<string, Estadistica>,
+  estricto: boolean,
+  limite: number,
+): [string, string][] | null {
   const fallidos = new Set<string>();
+  let pasos = 0;
 
   function buscar(libres: string[]): [string, string][] | null {
     if (libres.length === 0) return [];
+    if (++pasos > limite) return null;
     const clave = libres.join(',');
     if (fallidos.has(clave)) return null;
     const [p, ...resto] = libres;
@@ -120,7 +149,7 @@ function buscarParejas(lista: string[], est: Map<string, Estadistica>, estricto:
       const sub = buscar(resto.filter((x) => x !== q));
       if (sub) return [[p, q], ...sub];
     }
-    fallidos.add(clave);
+    if (pasos <= limite) fallidos.add(clave);
     return null;
   }
 

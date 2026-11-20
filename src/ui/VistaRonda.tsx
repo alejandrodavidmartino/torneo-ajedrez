@@ -131,7 +131,7 @@ export function VistaRonda({ torneo, aplicar, error }: { torneo: Torneo; aplicar
               </button>
             </span>
           </div>
-          {error?.codigo === 'sin-emparejamiento' && (
+          {error && ['sin-emparejamiento', 'sin-descanso', 'pocos-activos'].includes(error.codigo) && (
             <button class="boton-principal solo-pantalla" type="button" onClick={() => aplicar(terminarAntes)}>
               Terminar torneo aquí
             </button>

@@ -23,8 +23,9 @@ export function Ajustes({ torneo, ejecutar }: Props) {
     const archivo = input.files?.[0];
     if (!archivo) return;
     const texto = await archivo.text();
-    ejecutar(() => importar(texto));
     input.value = '';
+    if (!window.confirm('¿Cargar esta copia? Se sustituirá el torneo actual.')) return;
+    ejecutar(() => importar(texto));
   };
 
   const nuevo = () => {
